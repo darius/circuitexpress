@@ -355,6 +355,10 @@ but my favorite reader would like to be offered some challenges too.]
 OK, but...
 ==========
 
+[this is a skippable digression but i think worthwhile to ground what
+we're learning to do -- to appreciate the power and limits of digital
+stuff]
+
 We just built quite a large circuit, in human terms. Can the same
 methods scale up from a simple lock?
 
