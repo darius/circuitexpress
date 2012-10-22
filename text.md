@@ -326,9 +326,9 @@ A machine to compel assent
 
 These ideas came out of logic. true/false or 1/0 for right/left.
 
-  and(a, b) = mux(a, false, b), etc.
+  * `and(a, b) = mux(a, false, b)`, etc.
 
-  De Morgan's theorem corresponds to swapping left and right:
+  * De Morgan's theorem corresponds to swapping left and right:
   the mirror image of a working machine also works.
 
 In logic the point was to build and analyze arguments; a sound
