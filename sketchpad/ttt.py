@@ -2,12 +2,15 @@ import re
 
 ansi_clear_screen = '\x1b[2J\x1b[H'
 
-the_grid = ' ' * 9
+empty_grid = ' ' * 9
 def show(grid, r, c):
     return r.join(c.join(grid[i:i+3]) for i in range(0, 9, 3))
 
 win = r'OOO|O...O...O|O;.O.;O|O..;.O.;..O'
 win += '|' + win.replace('O', 'X')
+
+def is_won(grid): return re.search(win, show(grid, ';', ''))
+def is_drawn(grid): return ' ' not in grid
 
 other = {'X': 'O', 'O': 'X'}
 
@@ -24,25 +27,23 @@ def choose_move(grid, player):
 def update(grid, square, player):
     return grid[:square] + player + grid[square+1:]
 
-def is_won(grid): return re.search(win, show(grid, ';', ''))
-def is_drawn(grid): return ' ' not in grid
-
 def play():
+    grid = empty_grid
     for player in 'XO'*5:
-        print ansi_clear_screen + show(the_grid, '\n--+---+--\n', ' | ')
-        if is_drawn(the_grid) or is_won(the_grid): break
+        print ansi_clear_screen + show(grid, '\n--+---+--\n', ' | ')
+        if is_drawn(grid) or is_won(grid): break
         if player == 'O':
-            _, move = choose_move(the_grid, player)
+            _, move = choose_move(grid, player)
         else:
             move = int(raw_input(player + ' move? [1-9] ')) - 1
-        the_grid = update(the_grid, move, player)
+        grid = update(grid, move, player)
 
 
 
 from table2muxes import Constant, Variable, realize
 
 X1 = Variable('X1', tuple(range(9)))
-O1 = realize(lambda env: Constant(choose_move(update(the_grid, env[X1], 'X'), 'O')[1]),
+O1 = realize(lambda env: Constant(choose_move(update(empty_grid, env[X1], 'X'), 'O')[1]),
              [X1])
 ## O1
 #. Mux(X1, 4, 7, 4, 6, 8, 8, 4, 8, 4)
