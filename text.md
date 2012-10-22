@@ -407,7 +407,7 @@ State machines
 
 Candidate examples/projects: combination lock. coin matching
 game. tic-tac-toe by reinforcement learning. mouse in a
-maze. something like Agre & Chapman's Pengo agent?
+maze. pong. something like Agre & Chapman's Pengo agent?
 
 Extend/rewrite our HDL and simulator.
 
