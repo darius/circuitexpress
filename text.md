@@ -46,11 +46,13 @@ Also an example of recursion: a self-explaining system. This is a
 self-centered book. (Thus the working title.)
 
 [To spell it out:
+
   * an express intro to digital circuits (but how 'express' is it
     really?)
   * circuits as a way to express some neat ideas
   * a circuit of expression in which the book metacircularly explains
-    itself and stands as one example of such a loop
+    itself and stands as one example of such a loop.
+
 Is this at all evident? Too cute? Maybe "Circuit, express"?]
 
 [redundant] Try the examples out as you read: they are live, and the
@@ -339,6 +341,9 @@ its inputs. Equiv. to SAT.
 
 We can apply logic to specify and check our designs.
 
+Sometimes it's worthwhile to make machines that themselves employ
+logic. (E.g. minesweeper player)
+
 
 Tic-tac-toe
 ===========
@@ -357,7 +362,8 @@ OK, but...
 
 [this is a skippable digression but i think worthwhile to ground what
 we're learning to do -- to appreciate the power and limits of digital
-stuff]
+stuff. to see how to pass from small-scale mechanisms, that we can
+think of entirely as mechanisms, to homunculi.]
 
 We just built quite a large circuit, in human terms. Can the same
 methods scale up from a simple lock?
