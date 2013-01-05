@@ -1,2 +1,53 @@
+"Almost all lectures, even those by brilliant researchers, were
+dreary. (A shining exception by Robin Hanson.) They suffered from a
+lack of stories and a lack of emotion."
+http://blog.sethroberts.net/2012/12/09/online-teaching-versus-what/
+
+http://blog.notdot.net/2012/10/Build-your-own-FPGA
+
 coffeescript docs -- 2 columns. makes sense on-screen.
 
+take a look at myhdl: http://www.myhdl.org/doku.php/cookbook:intro
+
+on homunculi: try riffing on mccarthy's "ascribing mental qualities to
+machines". (we want to dispel them *temporarily*. they're useful.)
+http://gigasquidsoftware.com/wordpress/?p=477
+
+can we somehow incorporate btilly's strategy to teach linear algebra,
+with spaced review, etc.?
+http://news.ycombinator.com/item?id=4701321
+http://calnewport.com/blog/2012/10/26/mastering-linear-algebra-in-10-days-astounding-experiments-in-ultra-learning/
+It's worth presenting these ideas as advice to the reader in how to 
+get the most out of it, anyway.
+
+Eliezer, "The Nature of Logic"
+
+exercise: superopt from superbench
+
+after there's something to write about, write about this for http://push.cwcon.org/
+
+on the interaction interface: compute values one at a time, filling in
+placeholders (in case of a long-running computation)
+
+there really should be some stuff explicitly about self-reference and
+quining and self-replication in life, etc.
+
+ S. Ishihara, S. Minato. Manipulation of Regular Expressions Under
+Length Constraints Using Zero-Suppressed BDDs.  Proc. of ASP-DAC .95,
+pp. 391-396.
+
+
+  I particularly like the 'instructing homunculi' vs 'inanimate
+  causality' distinction. Do you think there might be (after some
+  training) an intermediate a 'functional' mindset, where the
+  programmer understands the code in terms of definitional rules which
+  are semantic like instructions, but a bit lifeless like rods or
+  gears?
+
+  Sometimes it's necessary to break out of a functional mindset into
+  an inanimate causality mindset in order to go down below the
+  linguistic abstractions and talk about, for example, space or time
+  concerns.
+
+problem (vague statement): given a logic puzzle, generate a verbal
+argument compelling assent to its solution.
