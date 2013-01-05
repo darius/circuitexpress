@@ -7,7 +7,7 @@ Introduction
 In this book we'll build a computer in simulation, starting simple and
 continuing until we've made a system able to run this very book. I say
 'run', because this is best read at a computer, with the examples
-performing as you read about them. Further, you're meant to read
+running as you read about them. Further, you're meant to read
 actively: you'll solve problems by editing the code, which will appear
 inline in the text.
 
@@ -20,8 +20,8 @@ at the hardware level it's not just the often-emphasized speed that's
 astonishing: beyond that, every visible result comes from millions of
 operations, or more, in series, *all* of which must complete without
 error. How can this be? On a pool table I can't even direct the cue
-ball to hit a ball to hit a ball into the pocket, not reliably. One
-second of computing is like a billion-carom shot.)
+ball to hit a ball to hit another ball into the pocket, not
+reliably. One second of computing is like a billion-carom shot.)
 
 [reword? -- yes, when a computer performs millions of operations just
 to pop up an ad, it's done in a blink; but it should astonish you that
@@ -189,11 +189,11 @@ table form:
 
 To specify an arbitrarily complicated decision depending on
 arbitrarily many variables, we could just make a bigger table with
-more columns and fill in the output columns as appropriate. Given such
-a table, how can we design a machine to realize it? Is there a general
-method? (Here's a good moment to pause again. I'm not going to keep
-marking them, though soon there will be affordances for coding at such
-points.)
+more columns, then fill in the output columns as appropriate. Given
+such a table, how can we design a machine to realize it? Is there a
+general method? (Here's a good moment to pause again. I'm not going to
+keep marking them, though soon there will be affordances for coding at
+such points.)
 
 One way is very direct: physically inscribe the table's output column
 as pits and raised spots, addressed by an arm that's moved by
