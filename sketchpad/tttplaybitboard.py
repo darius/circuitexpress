@@ -54,8 +54,6 @@ def human_play(grid, mark):
         print "Hey, that's illegal."
 
 def negamax_play(grid, mark):
-    # (Properly we should just use one of these, and unless I coded it
-    # wrong they turn out to be equivalent.)
     _, successor = pick_successor(grid)
     _, succ2 = pick_successor_v2(grid)
     if successor != succ2:
