@@ -26,6 +26,19 @@ def tictactoe(play_X, play_O):
 ansi_clear_screen = '\x1b[2J\x1b[H'
 
 
+# Utility
+
+def memo(f):
+    table = {}
+    def memo_f(*args):
+        try:
+            return table[args]
+        except KeyError:
+            table[args] = value = f(*args)
+            return value
+    return memo_f
+
+
 # Strategies. They all presume the game's not over.
 
 def human_play(grid, mark):
@@ -44,6 +57,7 @@ def negamax_play(grid, mark):
     _, successor = pick_successor(grid)
     return successor
 
+@memo
 def pick_successor(grid):
     "Return (value_to_player, successor) for the player's best move."
     return max((1, successor) if is_won(successor)
