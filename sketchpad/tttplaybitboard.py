@@ -5,22 +5,22 @@ TODO: a strategy that breaks ties as Peter Fraenkel does there.
 """
 
 def human_vs_puter():
-    play(human_move, negamax_move)
+    tictactoe(human_play, negamax_play)
 
-def play(play_X, play_O):
+def tictactoe(play_X, play_O):
     grid = empty_grid
     players = ('X', play_X), ('O', play_O)
     while True:
+        (mark, play), (prev_mark, _) = players
         print ansi_clear_screen
-        show(grid, [player[0] for player in players])
-        mark, strategy = players[0]
+        show(grid, (mark, prev_mark))
         if is_won(grid):
-            print mark, "wins."
+            print prev_mark, "wins."
             break
         if is_drawn(grid):
             print "A draw."
             break
-        grid = strategy(grid, mark)
+        grid = play(grid, mark)
         players = players[::-1]
 
 ansi_clear_screen = '\x1b[2J\x1b[H'
@@ -28,7 +28,7 @@ ansi_clear_screen = '\x1b[2J\x1b[H'
 
 # Strategies
 
-def human_move(grid, mark):
+def human_play(grid, mark):
     while True:
         try:
             move = int(raw_input(mark + " move? [1-9] "))
@@ -40,7 +40,7 @@ def human_move(grid, mark):
                 if successor: return successor
         print "Hey, that's illegal."
 
-def negamax_move(grid, mark):
+def negamax_play(grid, mark):
     _, successor = pick_successor(grid)
     return successor
 
@@ -122,7 +122,7 @@ def player_bits(bits):
 #. X . .
 #. 
 #. 
-## show(negamax_move((0104, 0420), 'X'), 'OX')
+## show(negamax_play((0104, 0420), 'X'), 'OX')
 #. O . X
 #. . O .
 #. X . X
