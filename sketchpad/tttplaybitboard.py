@@ -36,7 +36,7 @@ def human_move(grid, mark):
             pass
         else:
             if 1 <= move <= 9:
-                successor = apply_move(grid, human_move_number(move))
+                successor = apply_move(grid, from_human_move_number(move))
                 if successor: return successor
         print "Hey, that's illegal."
 
@@ -77,7 +77,7 @@ def apply_move((p, q), move):
     bit = 1 << move
     return (q, p | bit) if 0 == (bit & (p | q)) else None
 
-def human_move_number(n):
+def from_human_move_number(n):
     "Convert from a move numbered 1..9 in top-left..bottom-right order."
     return 9 - n
 
