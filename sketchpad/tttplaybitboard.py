@@ -65,10 +65,11 @@ def negamax_play(grid, mark):
 @memo
 def pick_successor(grid):
     "Return (value_to_player, successor) for the player's best move."
-    return max((1, successor) if is_won(successor)
-               else (0, successor) if is_drawn(successor)
-               else (lambda (v, _): (-v, successor))(pick_successor(successor))
-               for successor in successors(grid))
+    return max(((1, successor) if is_won(successor)
+                else (0, successor) if is_drawn(successor)
+                else (lambda (v, _): (-v, successor))(pick_successor(successor))
+                for successor in successors(grid)),
+               key=lambda (score, succ): score)
 
 @memo
 def pick_successor_v2(grid):
