@@ -12,7 +12,7 @@ def tictactoe(play_X, play_O):
     players = ('X', play_X), ('O', play_O)
     while True:
         (mark, play), (prev_mark, _) = players
-        print ansi_clear_screen
+#        print ansi_clear_screen
         show(grid, (mark, prev_mark))
         if is_won(grid):
             print prev_mark, "wins."
@@ -54,7 +54,12 @@ def human_play(grid, mark):
         print "Hey, that's illegal."
 
 def negamax_play(grid, mark):
+    # (Properly we should just use one of these, and unless I coded it
+    # wrong they turn out to be equivalent.)
     _, successor = pick_successor(grid)
+    _, succ2 = pick_successor_v2(grid)
+    if successor != succ2:
+        print 'Hey, different moves', successor, succ2
     return successor
 
 @memo
@@ -64,6 +69,35 @@ def pick_successor(grid):
                else (0, successor) if is_drawn(successor)
                else (lambda (v, _): (-v, successor))(pick_successor(successor))
                for successor in successors(grid))
+
+@memo
+def pick_successor_v2(grid):
+    "Return (value_to_player, successor) for the player's best move."
+    return max(((1, successor) if is_won(successor)
+                else (0, successor) if is_drawn(successor)
+                else (lambda (v, _): (-v, successor))(pick_successor_v2(successor))
+                for successor in successors(grid)),
+               key=lambda (score, succ): (score, -drunk_value(succ)))
+
+@memo
+def diffs(grid):
+    "The grids in the game subtree rooted here where v2 moves differently."
+    if is_won(grid) or is_drawn(grid):
+        return set()
+    _, successor = pick_successor(grid)
+    _, succ2 = pick_successor_v2(grid)
+    diff = set([grid]) if successor != succ2 else set()
+    return diff.union(*map(diffs, successors(grid)))
+
+@memo
+def drunk_value(grid):
+    "Return expected value to the player if both players play at random."
+    if is_won(grid): return -1
+    if is_drawn(grid): return 0
+    return -average(map(drunk_value, successors(grid)))
+
+def average(ns):
+    return float(sum(ns)) / len(ns)
 
 
 # Bit-board representation: a pair of bitsets (p, q),
