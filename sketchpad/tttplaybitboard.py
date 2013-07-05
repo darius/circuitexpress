@@ -53,19 +53,19 @@ def pick_successor(grid):
                for successor in successors(grid))
 
 
-# Bit-board representation: a pair of bitsets (p, o),
-# p for the player to move, o for their opponent.
+# Bit-board representation: a pair of bitsets (p, q),
+# p for the player to move, q for their opponent.
 # Least significant bit is the lower-right square; msb is upper-left.
 # (Differs from the human move numbering for the sake of nice octal constants.)
 
 empty_grid = 0, 0
 
-def is_drawn((pbits, obits)):
-    return (pbits | obits) == 0777
+def is_drawn((p, q)):
+    return (p | q) == 0777
 
-def is_won((pbits, obits)):
+def is_won((p, q)):
     "Did the latest move win the game?"
-    return any((obits & way) == way for way in ways_to_win)
+    return any((q & way) == way for way in ways_to_win)
 
 ways_to_win = (0700, 0070, 0007, 0444, 0222, 0111, 0421, 0124)
 
@@ -73,9 +73,9 @@ def successors(grid):
     "Return the possible grids resulting from p's moves."
     return filter(None, (apply_move(grid, move) for move in range(9)))
 
-def apply_move((pbits, obits), move):
+def apply_move((p, q), move):
     bit = 1 << move
-    return (obits, pbits | bit) if 0 == (bit & (pbits | obits)) else None
+    return (q, p | bit) if 0 == (bit & (p | q)) else None
 
 def human_move_number(n):
     "Convert from a move numbered 1..9 in top-left..bottom-right order."
@@ -83,7 +83,7 @@ def human_move_number(n):
 
 def show((bits1, bits2), (mark1, mark2)):
     "Show a grid human-readably."
-    bits = iter(zip(*map(board_bits, (bits1, bits2))))
+    bits = iter(zip(*map(player_bits, (bits1, bits2))))
     for row in range(3):
         for col in range(3):
             bit1, bit2 = next(bits)
@@ -91,8 +91,8 @@ def show((bits1, bits2), (mark1, mark2)):
         print
     print
 
-def board_bits(bitboard):
-    return ((bitboard >> i) & 1 for i in reversed(range(9)))
+def player_bits(bits):
+    return ((bits >> i) & 1 for i in reversed(range(9)))
 
 
 ## show((0700, 0060), 'XO')
