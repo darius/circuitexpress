@@ -4,11 +4,11 @@ inspired by https://gist.github.com/pnf/5924614
 TODO: a strategy that breaks ties as Peter Fraenkel does there.
 """
 
-def human_vs_puter():
-    tictactoe(human_play, negamax_play)
+def human_vs_puter(grid=None):
+    tictactoe(human_play, negamax_play, grid)
 
-def tictactoe(play_X, play_O):
-    grid = empty_grid
+def tictactoe(play_X, play_O, grid=None):
+    grid = grid or empty_grid
     players = ('X', play_X), ('O', play_O)
     while True:
         (mark, play), (prev_mark, _) = players
@@ -80,14 +80,36 @@ def pick_successor_v2(grid):
                 for successor in successors(grid)),
                key=lambda (score, succ): (score, -drunk_value(succ)))
 
+def viz_diffs():
+    for grid in sorted(all_diffs()):
+        orig = view(grid, 'XO')
+        score1, succ1 = pick_successor(grid)
+        v1 = view(succ1, 'OX')
+        score2, succ2 = pick_successor_v2(grid)
+        v2 = view(succ2, 'OX')
+        print abut(orig, abut(v1, v2)), '  %.2g' % (drunk_value(succ1) - drunk_value(succ2))
+        print
+
+def abut(s, t):
+    return '\n'.join(map('   '.join, zip(s.splitlines(), t.splitlines())))
+
+## print abut(view((0700, 0062), 'XO'), view((0700, 0061), 'XO')),
+#. X X X   X X X
+#. O O .   O O .
+#. . O .   . . O
+
+def all_diffs():
+    return set(map(symmetrize, diffs(empty_grid)))
+
 @memo
 def diffs(grid):
     "The grids in the game subtree rooted here where v2 moves differently."
+    grid = symmetrize(grid)
     if is_won(grid) or is_drawn(grid):
         return set()
     _, successor = pick_successor(grid)
     _, succ2 = pick_successor_v2(grid)
-    diff = set([grid]) if successor != succ2 else set()
+    diff = set([grid]) if symmetrize(successor) != symmetrize(succ2) else set()
     return diff.union(*map(diffs, successors(grid)))
 
 @memo
@@ -98,6 +120,7 @@ def drunk_value(grid):
     return -average(map(drunk_value, successors(grid)))
 
 def average(ns):
+    assert ns
     return float(sum(ns)) / len(ns)
 
 
@@ -107,6 +130,42 @@ def average(ns):
 # (Differs from the human move numbering for the sake of nice octal constants.)
 
 empty_grid = 0, 0
+
+def symmetrize(grid):
+    return min(spin(grid) + spin(flip(grid)))
+
+def spin(grid):
+    "Return a list of the four rotations of the grid."
+    result = [grid]
+    for _ in range(3):
+        grid = turn(grid)
+        result.append(grid)
+    return result
+
+def flip((p, q)):
+    "Mirror-reflect the grid vertically."
+    # 0123 --> 0321
+    def flip1(bits): return ((bits & 07) << 6) | (bits & 070) | ((bits & 0700) >> 6)
+    return flip1(p), flip1(q)
+
+def turn((p, q)):
+    "Turn the grid a quarter turn."
+    # abc     cfi
+    # def --> beh
+    # ghi     adg
+    #
+    #         2  4  6
+    #        -2  0  2
+    #        -6 -4 -2
+    def turn1(b):
+        return (  ((b & 0001) << 6)
+                | ((b & 0010) << 4)
+                | ((b & 0102) << 2)
+                | ((b & 0020))
+                | ((b & 0204) >> 2)
+                | ((b & 0040) >> 4)
+                | ((b & 0400) >> 6))
+    return turn1(p), turn1(q)
 
 def is_drawn((p, q)):
     return (p | q) == 0777
@@ -129,25 +188,40 @@ def from_human_move_number(n):
     "Convert from a move numbered 1..9 in top-left..bottom-right order."
     return 9 - n
 
-def show((bits1, bits2), (mark1, mark2)):
+def show(grid, marks='XO'):
+    print view(grid, marks)
+    print
+
+def view((bits1, bits2), (mark1, mark2)):
     "Show a grid human-readably."
+    lines = []
     bits = iter(zip(*map(player_bits, (bits1, bits2))))
     for row in range(3):
+        lines.append([])
         for col in range(3):
             bit1, bit2 = next(bits)
-            print mark1 if bit1 else mark2 if bit2 else '.',
-        print
-    print
+            lines[-1].append(mark1 if bit1 else mark2 if bit2 else '.')
+        lines[-1] = ' '.join(lines[-1])
+    return '\n'.join(lines)
 
 def player_bits(bits):
     return ((bits >> i) & 1 for i in reversed(range(9)))
 
-
-## show((0700, 0060), 'XO')
+    
+## print view((0700, 0060), 'XO')
 #. X X X
 #. O O .
 #. . . .
 #. 
+## print view(turn((0700, 0060)), 'XO')
+#. X . .
+#. X O .
+#. X O .
+#. 
+## print view(flip((0700, 0060)), 'XO')
+#. . . .
+#. O O .
+#. X X X
 #. 
 ## for succ in successors((0610, 0061)): show(succ, 'XO')
 #. O O .
@@ -164,18 +238,18 @@ def player_bits(bits):
 #. 
 #. 
 
-## show((0104, 0420), 'XO')
+## print view((0104, 0420), 'XO')
 #. O . X
 #. . O .
 #. X . .
 #. 
-#. 
-## show(negamax_play((0104, 0420), 'X'), 'OX')
+## print view(negamax_play((0104, 0420), 'X'), 'OX')
 #. O . X
 #. . O .
 #. X . X
 #. 
-#. 
+
 
 if __name__ == '__main__':
-    human_vs_puter()
+    # human_vs_puter()
+    viz_diffs()
