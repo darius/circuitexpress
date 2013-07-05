@@ -26,7 +26,7 @@ def tictactoe(play_X, play_O):
 ansi_clear_screen = '\x1b[2J\x1b[H'
 
 
-# Strategies
+# Strategies. They all presume the game's not over.
 
 def human_play(grid, mark):
     while True:
@@ -45,8 +45,7 @@ def negamax_play(grid, mark):
     return successor
 
 def pick_successor(grid):
-    "Return (value_to_p, (obits, new_pbits) for p's best move."
-    # Pre: game not over
+    "Return (value_to_player, successor) for the player's best move."
     return max((1, successor) if is_won(successor)
                else (0, successor) if is_drawn(successor)
                else (lambda (v, _): (-v, successor))(pick_successor(successor))
