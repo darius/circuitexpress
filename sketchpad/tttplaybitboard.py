@@ -91,15 +91,6 @@ def show((bits1, bits2), (mark1, mark2)):
         print
     print
 
-def show(grid, marks):
-    "Show a grid human-readably."
-    bits = iter(zip(*map(board_bits, grid)))
-    for row in range(3):
-        for col in range(3):
-            print ''.join(bit * mark for mark, bit in zip(marks, next(bits))) or '.',
-        print
-    print
-
 def board_bits(bitboard):
     return ((bitboard >> i) & 1 for i in reversed(range(9)))
 
