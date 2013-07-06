@@ -156,4 +156,3 @@ def player_bits(bits):
 
 if __name__ == '__main__':
     human_vs_puter()
-#    show(pick_successor(empty_grid), 'OX')
