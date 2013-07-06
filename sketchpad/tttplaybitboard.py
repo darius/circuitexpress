@@ -27,6 +27,9 @@ ansi_clear_screen = '\x1b[2J\x1b[H'
 
 # Utility
 
+def average(ns):
+    return float(sum(ns)) / len(ns)
+
 def memo(f):
     table = {}
     def memo_f(*args):
@@ -116,10 +119,6 @@ def drunk_value(grid):
     if is_won(grid): return -1
     if is_full(grid): return 0
     return -average(map(drunk_value, successors(grid)))
-
-def average(ns):
-    assert ns
-    return float(sum(ns)) / len(ns)
 
 
 # Bit-board representation: a pair of bitsets (p, q),
