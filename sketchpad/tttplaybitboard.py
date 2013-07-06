@@ -1,7 +1,6 @@
 """
 Rewrite of tttplay using a bitboard representation as
 inspired by https://gist.github.com/pnf/5924614
-TODO: a strategy that breaks ties as Peter Fraenkel does there.
 """
 
 def human_vs_puter(grid=None):
@@ -17,7 +16,7 @@ def tictactoe(play_X, play_O, grid=None):
         if is_won(grid):
             print prev_mark, "wins."
             break
-        if is_drawn(grid):
+        if is_full(grid):
             print "A draw."
             break
         grid = play(grid, mark)
@@ -64,7 +63,7 @@ def negamax_play(grid, mark):
 def pick_successor(grid):
     "Return (value_to_player, successor) for the player's best move."
     return max(((1, successor) if is_won(successor)
-                else (0, successor) if is_drawn(successor)
+                else (0, successor) if is_full(successor)
                 else (lambda (v, _): (-v, successor))(pick_successor(successor))
                 for successor in successors(grid)),
                key=lambda (score, succ): score)
@@ -73,7 +72,7 @@ def pick_successor(grid):
 def pick_successor_v2(grid):
     "Return (value_to_player, successor) for the player's best move."
     return max(((1, successor) if is_won(successor)
-                else (0, successor) if is_drawn(successor)
+                else (0, successor) if is_full(successor)
                 else (lambda (v, _): (-v, successor))(pick_successor_v2(successor))
                 for successor in successors(grid)),
                key=lambda (score, succ): (score, -drunk_value(succ)))
@@ -104,7 +103,7 @@ def all_diffs():
 def diffs(grid):
     "The grids in the game subtree rooted here where v2 moves differently."
     grid = normalize(grid)
-    if is_won(grid) or is_drawn(grid):
+    if is_won(grid) or is_full(grid):
         return set()
     _, successor = pick_successor(grid)
     _, succ2 = pick_successor_v2(grid)
@@ -115,7 +114,7 @@ def diffs(grid):
 def drunk_value(grid):
     "Return expected value to the player if both players play at random."
     if is_won(grid): return -1
-    if is_drawn(grid): return 0
+    if is_full(grid): return 0
     return -average(map(drunk_value, successors(grid)))
 
 def average(ns):
@@ -170,7 +169,8 @@ def turn((p, q)):
                 | ((b & 0400) >> 6))
     return turn1(p), turn1(q)
 
-def is_drawn((p, q)):
+def is_full((p, q)):
+    "Is no move possible?"
     return (p | q) == 0777
 
 def is_won((p, q)):
