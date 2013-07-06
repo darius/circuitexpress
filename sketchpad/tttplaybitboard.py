@@ -12,7 +12,8 @@ def tictactoe(play_X, play_O, grid=None):
     while True:
         (mark, play), (prev_mark, _) = players
         print ansi_clear_screen
-        show(grid, (mark, prev_mark))
+        print view(grid, (mark, prev_mark))
+        print
         if is_won(grid):
             print prev_mark, "wins."
             break
@@ -102,10 +103,6 @@ def from_human_move_number(n):
     "Convert from a move numbered 1..9 in top-left..bottom-right order."
     return 9 - n
 
-def show(grid, marks='XO'):
-    print view(grid, marks)
-    print
-
 def view((bits1, bits2), (mark1, mark2)):
     "Show a grid human-readably."
     squares = (mark1 if bit1 else mark2 if bit2 else '.'
@@ -122,18 +119,18 @@ def player_bits(bits):
 #. O O .
 #. . . .
 #. 
-## for succ in successors((0610, 0061)): show(succ, 'XO')
+## for succ in successors((0610, 0061)): print view(succ, 'XO'),'\n'
 #. O O .
 #. X X O
-#. . O X
+#. . O X 
 #. 
 #. O O .
 #. X X O
-#. O . X
+#. O . X 
 #. 
 #. O O O
 #. X X O
-#. . . X
+#. . . X 
 #. 
 #. 
 
