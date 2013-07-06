@@ -37,8 +37,7 @@
 (defn won?
   "Did the previous move win the game?"
   [[p q]]
-  (some #(= (bit-and q %) %)
-        ways-to-win))
+  (some #(= (bit-and q %) %) ways-to-win))
 
 (defn apply-move [[p q] move]
   (let [square (bit-shift-left 1 move)]
