@@ -85,11 +85,12 @@ def viz_diffs():
         v1 = view(succ1, 'OX')
         score2, succ2 = pick_successor_v2(grid)
         v2 = view(succ2, 'OX')
-        print abut(orig, abut(v1, v2)), '  %.2g' % (drunk_value(succ1) - drunk_value(succ2))
+        improvement = drunk_value(succ1) - drunk_value(succ2)
+        print abut(orig, abut(v1, v2)), '  %.2g' % improvement
         print
 
-def abut(s, t):
-    return '\n'.join(map('   '.join, zip(s.splitlines(), t.splitlines())))
+def abut(s, t, sep='   '):
+    return '\n'.join(map(sep.join, zip(s.splitlines(), t.splitlines())))
 
 ## print abut(view((0700, 0062), 'XO'), view((0700, 0061), 'XO')),
 #. X X X   X X X
