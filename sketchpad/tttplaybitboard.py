@@ -7,6 +7,7 @@ def human_vs_puter(grid=None):
     tictactoe(human_play, negamax_play, grid)
 
 def tictactoe(play_X, play_O, grid=None):
+    "Put two strategies to a classic battle of wits."
     grid = grid or empty_grid
     players = ('X', play_X), ('O', play_O)
     while True:
@@ -57,15 +58,15 @@ def human_play(grid, mark):
         print "Hey, that's illegal."
 
 def negamax_play(grid, mark):
-    return pick_successor(grid)
+    return best_successor(grid)
 
-def pick_successor(grid):
+def best_successor(grid):
     return min(successors(grid),
                key=lambda succ: (evaluate(succ), drunk_value(succ)))
 
 @memo
 def drunk_value(grid):
-    "Return expected value to the player if both players play at random."
+    "Return the expected value to the player if both players play at random."
     if is_won(grid): return -1
     succs = successors(grid)
     return -average(map(drunk_value, succs)) if succs else 0
@@ -96,6 +97,7 @@ def successors(grid):
     return filter(None, (apply_move(grid, move) for move in range(9)))
 
 def apply_move((p, q), move):
+    "Try to move: return a new grid, or None if illegal."
     bit = 1 << move
     return (q, p | bit) if 0 == (bit & (p | q)) else None
 
@@ -114,10 +116,10 @@ def player_bits(bits):
     return ((bits >> i) & 1 for i in reversed(range(9)))
 
     
-## print view((0700, 0060), 'XO')
-#. X X X
-#. O O .
-#. . . .
+## print view((0610, 0061), 'XO')
+#. X X .
+#. O O X
+#. . . O
 #. 
 ## for succ in successors((0610, 0061)): print view(succ, 'XO'),'\n'
 #. O O .
@@ -133,18 +135,11 @@ def player_bits(bits):
 #. . . X 
 #. 
 #. 
-
-## print view((0104, 0420), 'XO')
-#. O . X
-#. . O .
-#. X . .
+## print view(negamax_play((0610, 0061), 'X'), 'XO')
+#. O O O
+#. X X O
+#. . . X
 #. 
-## print view(negamax_play((0104, 0420), 'X'), 'OX')
-#. O . X
-#. . O .
-#. X . X
-#. 
-
 
 if __name__ == '__main__':
     human_vs_puter()
