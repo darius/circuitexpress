@@ -98,17 +98,17 @@ def abut(s, t, sep='   '):
 #. . O .   . . O
 
 def all_diffs():
-    return set(map(symmetrize, diffs(empty_grid)))
+    return set(map(normalize, diffs(empty_grid)))
 
 @memo
 def diffs(grid):
     "The grids in the game subtree rooted here where v2 moves differently."
-    grid = symmetrize(grid)
+    grid = normalize(grid)
     if is_won(grid) or is_drawn(grid):
         return set()
     _, successor = pick_successor(grid)
     _, succ2 = pick_successor_v2(grid)
-    diff = set([grid]) if symmetrize(successor) != symmetrize(succ2) else set()
+    diff = set([grid]) if normalize(successor) != normalize(succ2) else set()
     return diff.union(*map(diffs, successors(grid)))
 
 @memo
@@ -130,7 +130,8 @@ def average(ns):
 
 empty_grid = 0, 0
 
-def symmetrize(grid):
+def normalize(grid):
+    "Of the grids equivalent to grid under symmetry, pick one."
     return min(spin(grid) + spin(flip(grid)))
 
 def spin(grid):
