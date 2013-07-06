@@ -108,15 +108,10 @@ def show(grid, marks='XO'):
 
 def view((bits1, bits2), (mark1, mark2)):
     "Show a grid human-readably."
-    lines = []
-    bits = iter(zip(*map(player_bits, (bits1, bits2))))
-    for row in range(3):
-        lines.append([])
-        for col in range(3):
-            bit1, bit2 = next(bits)
-            lines[-1].append(mark1 if bit1 else mark2 if bit2 else '.')
-        lines[-1] = ' '.join(lines[-1])
-    return '\n'.join(lines)
+    squares = (mark1 if bit1 else mark2 if bit2 else '.'
+               for bit1, bit2 in zip(*map(player_bits, (bits1, bits2))))
+    return '\n'.join(' '.join(next(squares) for col in range(3))
+                     for row in range(3))
 
 def player_bits(bits):
     return ((bits >> i) & 1 for i in reversed(range(9)))
