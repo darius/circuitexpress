@@ -27,7 +27,7 @@
 
 (def empty-grid [0 0])
 
-(defn drawn?
+(defn full?
   "Is no move possible?"
   [[p q]]
   (= 0777 (bit-or p q)))
@@ -66,15 +66,15 @@
 (def drunk-value
   (memoize
    (fn [grid]
-     (cond (drawn? grid) 0
-           (won? grid) -1
+     (cond (won? grid) -1
+           (full? grid) 0
            :else (- (float (average (map drunk-value (successors grid)))))))))
 
 (def value
   (memoize
    (fn [grid]
-     (cond (drawn? grid) 0
-           (won? grid) -1
+     (cond (won? grid) -1
+           (full? grid) 0
            :else (- (reduce min (map value (successors grid))))))))
 
 ;; Pre: the game's not over
