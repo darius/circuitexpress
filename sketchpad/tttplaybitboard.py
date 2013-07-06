@@ -105,10 +105,10 @@ def from_human_move_number(n):
     "Convert from a move numbered 1..9 in top-left..bottom-right order."
     return 9 - n
 
-def view((bits1, bits2), (mark1, mark2)):
+def view((p, q), (p_mark, q_mark)):
     "Show a grid human-readably."
-    squares = (mark1 if bit1 else mark2 if bit2 else '.'
-               for bit1, bit2 in zip(*map(player_bits, (bits1, bits2))))
+    squares = (p_mark if by_p else q_mark if by_q else '.'
+               for by_p, by_q in zip(*map(player_bits, (p, q))))
     return '\n'.join(' '.join(next(squares) for col in range(3))
                      for row in range(3))
 
