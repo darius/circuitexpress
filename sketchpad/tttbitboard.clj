@@ -7,16 +7,16 @@
   (/ (reduce + ns) (count ns)))
 
 ;; XXX I'm a clojure beginner, how can this be nicer or avoided?
-(defn maxes-key
-  "Returns the x's for which (key x) is greatest. (One or more of them)."
+(defn mins-key
+  "Returns the x's for which (key x) is leest. (One or more of them)."
   [key x & more]
   (if (empty? more)
       (list x)
-      (let [maxes (apply maxes-key key more)
+      (let [mins (apply mins-key key more)
             x-k (key x)
-            max-k (key (first maxes))]
-        (cond (< x-k max-k) maxes
-              (= x-k max-k) (cons x maxes)
+            min-k (key (first mins))]
+        (cond (< min-k x-k) mins
+              (= min-k x-k) (cons x mins)
               :else         (list x)))))
 
 
@@ -80,7 +80,7 @@
 
 ;; Pre: the game's not over
 (defn pick-successor
-  "Make a best move, breaking ties with best average value."
+  "Make a best move, breaking ties by best average value."
   [grid]
   (apply min-key drunk-value
-         (apply maxes-key value (successors grid))))
+         (apply mins-key value (successors grid))))
