@@ -131,8 +131,11 @@ def average(ns):
 empty_grid = 0, 0
 
 def normalize(grid):
-    "Of the grids equivalent to grid under symmetry, pick one."
-    return min(spin(grid) + spin(flip(grid)))
+    "Of the grids equivalent to grid under symmetry, pick one consistently."
+    return min(equivalents(grid))
+
+def equivalents(grid):
+    return spin(grid) + spin(flip(grid))
 
 def spin(grid):
     "Return a list of the four rotations of the grid."
@@ -175,6 +178,9 @@ def is_won((p, q)):
     return any((q & way) == way for way in ways_to_win)
 
 ways_to_win = (0700, 0070, 0007, 0444, 0222, 0111, 0421, 0124)
+# XXX I'd like to write
+# ways_to_win = set(equivalents(0700) + equivalents(0070) + equivalents(0124))
+# but equivalents takes a board, not a bitset.
 
 def successors(grid):
     "Return the possible grids resulting from p's moves."
