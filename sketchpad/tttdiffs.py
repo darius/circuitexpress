@@ -26,7 +26,7 @@ def all_diffs():
 def diffs(grid):
     "The grids in the game subtree rooted here where v2 moves differently."
     grid = normalize(grid)
-    if is_won(grid) or is_full(grid):
+    if is_won(grid) or not successors(grid):
         return set()
     successor = pick_successor(grid)
     succ2 = min(successors(grid), key=evaluate)
