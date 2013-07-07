@@ -1,3 +1,19 @@
+"""
+tttplaybitboard is a little fancier than optimal play requires: it
+breaks ties in minimax-value according to the expected value of a
+board supposing both players move blindly. This module prints out
+all the cases where the tiebreaker changes its behavior.
+
+(This isn't quite what I ought to want, which is all cases where
+the tiebreaker *affects* the choice. Sometimes the arbitrary choice
+among optimal moves will be the same as what the tiebreaker chooses;
+we don't report those cases.)
+
+Cases related by symmetry are deduplicated. (The symmetries could be
+exploited the same way in tttplaybitboard, but this turns out to speed
+things up by only 1/3 or so, so we don't bother.)
+"""
+
 from tttplaybitboard import *
 
 def viz_diffs():
