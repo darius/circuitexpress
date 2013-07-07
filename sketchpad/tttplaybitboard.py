@@ -1,10 +1,28 @@
 """
-Rewrite of tttplay using a bitboard representation as
-inspired by https://gist.github.com/pnf/5924614
+My super-fancy console tic-tac-toe. A rewrite of tttplay using a bitboard
+representation as inspired by https://gist.github.com/pnf/5924614
 """
 
-def human_vs_puter(grid=None):
-    tictactoe(human_play, negamax_play, grid)
+def main(argv):
+    pool = dict((name[:-5], play) for name, play in globals().items()
+                if name.endswith('_play'))
+    faceoff = [human_play, negamax_play]
+    try:
+        if len(argv) == 1:
+            pass
+        elif len(argv) == 2:
+            faceoff[1] = pool[argv[1]]
+        elif len(argv) == 3:
+            faceoff = [pool[argv[1]], pool[argv[2]]]
+        else:
+            raise KeyError
+    except KeyError:
+        print "Usage: %s [player] [player]" % argv[0]
+        print "where a player is one of:", ' '.join(sorted(pool.keys()))
+        return 1
+    else:
+        tictactoe(*faceoff)
+        return 0
 
 def tictactoe(play_X, play_O, grid=None):
     "Put two strategies to a classic battle of wits."
@@ -12,7 +30,7 @@ def tictactoe(play_X, play_O, grid=None):
     players = ('X', play_X), ('O', play_O)
     while True:
         (mark, play), (prev_mark, _) = players
-        print ansi_clear_screen
+        if human_play in (play_X, play_O): print ansi_clear_screen
         print view(grid, (mark, prev_mark))
         print
         if is_won(grid):
@@ -55,7 +73,11 @@ def human_play(grid, mark):
             if 1 <= move <= 9:
                 successor = apply_move(grid, from_human_move_number(move))
                 if successor: return successor
-        print "Hey, that's illegal."
+        print "Hey, that's illegal. Give 1 for top left, 9 for bottom right, etc."
+
+def drunk_play(grid, mark):
+    "Beatable, but not so stupid it seems mindless."
+    return min(successors(grid), key=drunk_value)
 
 def negamax_play(grid, mark):
     return best_successor(grid)
@@ -142,4 +164,5 @@ def player_bits(bits):
 #. 
 
 if __name__ == '__main__':
-    human_vs_puter()
+    import sys
+    sys.exit(main(sys.argv))
