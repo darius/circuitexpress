@@ -6,7 +6,7 @@ representation as inspired by https://gist.github.com/pnf/5924614
 def main(argv):
     pool = dict((name[:-5], play) for name, play in globals().items()
                 if name.endswith('_play'))
-    faceoff = [human_play, negamax_play]
+    faceoff = [human_play, max_play]
     try:
         if len(argv) == 1:
             pass
@@ -79,7 +79,8 @@ def drunk_play(grid, mark):
     "Beatable, but not so stupid it seems mindless."
     return min(successors(grid), key=drunk_value)
 
-def negamax_play(grid, mark):
+def max_play(grid, mark):
+    "Play minimax with ties broken by drunk_value."
     return best_successor(grid)
 
 def best_successor(grid):
@@ -157,7 +158,7 @@ def player_bits(bits):
 #. . . X 
 #. 
 #. 
-## print view(negamax_play((0610, 0061), 'X'), 'XO')
+## print view(max_play((0610, 0061), 'X'), 'XO')
 #. O O O
 #. X X O
 #. . . X
