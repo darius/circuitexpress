@@ -6,18 +6,17 @@
 (defn average [ns]
   (/ (reduce + ns) (count ns)))
 
-;; XXX I'm a clojure beginner, how can this be nicer or avoided?
+;; XXX I'm a clojure beginner, can this be nicer or avoided?
 (defn mins-key
-  "Returns the x's for which (key x) is leest. (One or more of them)."
+  "Returns the x's for which (key x) is least. (One or more of them)."
   [key x & more]
-  (if (empty? more)
-      (list x)
-      (let [mins (apply mins-key key more)
-            x-k (key x)
-            min-k (key (first mins))]
-        (cond (< min-k x-k) mins
-              (= min-k x-k) (cons x mins)
-              :else         (list x)))))
+  (reduce (fn [leasts y]
+            (let [diff (compare (key (first leasts)) (key y))]
+              (cond (< diff 0) leasts
+                    (= diff 0) (conj leasts y)
+                   :else       [y])))
+          [x]
+          more))
 
 
 ;; Bit-board representation: a pair of bitsets [p q], p for the
