@@ -1,5 +1,6 @@
+#!/usr/bin/env python
 """
-My super-fancy console tic-tac-toe.
+Super-fancy console tic-tac-toe.
 Derived from tttplay.py
 Bitboards from https://gist.github.com/pnf/5924614
 grid_format from https://github.com/gigamonkey/gigamonkey-tic-tac-toe/blob/master/search.py
@@ -20,7 +21,7 @@ def main(argv):
             raise KeyError
     except KeyError:
         print "Usage: %s [player] [player]" % argv[0]
-        print "where a player is one of:", ' '.join(sorted(pool))
+        print "where a player is one of:", ', '.join(sorted(pool))
         return 1
     else:
         tictactoe(*faceoff)
