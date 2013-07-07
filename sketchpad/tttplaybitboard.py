@@ -26,23 +26,21 @@ def main(argv):
         tictactoe(*faceoff)
         return 0
 
-def tictactoe(play_X, play_O, grid=None):
+def tictactoe(player, opponent, grid=None):
     "Put two strategies to a classic battle of wits."
     grid = grid or empty_grid
-    players = ('X', play_X), ('O', play_O)
     while True:
-        (mark, play), (prev_mark, _) = players
-        if human_play in (play_X, play_O): print ansi_clear_screen
-        print view(grid, (mark, prev_mark))
+        if human_play in (player, opponent): print ansi_clear_screen
+        print view(grid)
         print
         if is_won(grid):
-            print prev_mark, "wins."
+            print whose_move(grid), "wins."
             break
         if not successors(grid):
             print "A draw."
             break
-        grid = play(grid, mark)
-        players = players[::-1]
+        grid = player(grid)
+        player, opponent = opponent, player
 
 ansi_clear_screen = '\x1b[2J\x1b[H'
 
@@ -65,11 +63,11 @@ def memo(f):
 
 # Strategies. They all presume the game's not over.
 
-def human_play(grid, mark):
+def human_play(grid):
     "Just ask for a move."
     while True:
         try:
-            move = int(raw_input(mark + " move? [1-9] "))
+            move = int(raw_input(whose_move(grid) + " move? [1-9] "))
         except ValueError:
             pass
         else:
@@ -85,11 +83,11 @@ def human_play(grid, mark):
 
 grid_format = '\n'.join([' %s %s %s'] * 3)
 
-def drunk_play(grid, mark):
+def drunk_play(grid):
     "Beatable, but not so stupid it seems mindless."
     return min(successors(grid), key=drunk_value)
 
-def max_play(grid, mark):
+def max_play(grid):
     "Play minimax with ties broken by drunk_value."
     return best_successor(grid)
 
@@ -138,39 +136,45 @@ def from_human_move(n):
     "Convert from a move numbered 1..9 in top-left..bottom-right order."
     return 9 - n
 
-def view((p, q), (p_mark, q_mark)):
+def view(grid):
     "Show a grid human-readably."
-    squares = (p_mark if by_p else q_mark if by_q else '.'
-               for by_p, by_q in zip(*map(player_bits, (p, q))))
-    return grid_format % tuple(squares)
+    return grid_format % tuple(('.'+player_marks(grid))[by_p + 2*by_q]
+                               for by_p, by_q in zip(*map(player_bits, grid)))
 
 def player_bits(bits):
     return ((bits >> i) & 1 for i in reversed(range(9)))
 
+def player_marks((p, q)):
+    "Return two results: the player's mark and their opponent's."
+    return 'XO' if sum(player_bits(p)) == sum(player_bits(q)) else 'OX'
 
-## print view((0610, 0061), 'XO')
+def whose_move(grid):
+    "Return the mark of the player to move."
+    return player_marks(grid)[0]
+
+## print view((0610, 0061))
 #.  X X .
 #.  O O X
 #.  . . O
 #. 
-## for succ in successors((0610, 0061)): print view(succ, 'XO'),'\n'
-#.  O O .
-#.  X X O
-#.  . O X 
+## for succ in successors((0610, 0061)): print view(succ),'\n'
+#.  X X .
+#.  O O X
+#.  . X O 
 #. 
-#.  O O .
-#.  X X O
-#.  O . X 
+#.  X X .
+#.  O O X
+#.  X . O 
 #. 
-#.  O O O
-#.  X X O
-#.  . . X 
+#.  X X X
+#.  O O X
+#.  . . O 
 #. 
 #. 
-## print view(max_play((0610, 0061), 'X'), 'XO')
-#.  O O O
-#.  X X O
-#.  . . X
+## print view(max_play((0610, 0061)))
+#.  X X X
+#.  O O X
+#.  . . O
 #. 
 
 if __name__ == '__main__':

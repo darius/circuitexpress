@@ -18,11 +18,11 @@ from tttplaybitboard import *
 
 def viz_diffs():
     for grid in sorted(all_diffs()):
-        original = view(grid, 'XO')
+        original = view(grid)
         succ1 = min(successors(grid), key=evaluate)
         succ2 = best_successor(grid)
-        v1 = view(succ1, 'OX')
-        v2 = view(succ2, 'OX')
+        v1 = view(succ1)
+        v2 = view(succ2)
         improvement = drunk_value(succ1) - drunk_value(succ2)
         print abut(original, abut(v1, v2)), '  %.2g' % improvement
         print
@@ -30,10 +30,10 @@ def viz_diffs():
 def abut(s, t, sep='   '):
     return '\n'.join(map(sep.join, zip(s.splitlines(), t.splitlines())))
 
-## print abut(view((0700, 0062), 'XO'), view((0700, 0061), 'XO')),
-#. X X X   X X X
-#. O O .   O O .
-#. . O .   . . O
+## print abut(view((0700, 0062)), view((0700, 0061))),
+#.  X X X    X X X
+#.  O O .    O O .
+#.  . O .    . . O
 
 def all_diffs():
     return set(map(normalize, diffs(empty_grid)))
@@ -88,15 +88,15 @@ def turn((p, q)):
                 | ((b & 0400) >> 6))
     return turn1(p), turn1(q)
 
-## print view(turn((0700, 0060)), 'XO')
-#. X . .
-#. X O .
-#. X O .
+## print view(turn((0700, 0060)))
+#.  O . .
+#.  O X .
+#.  O X .
 #. 
-## print view(flip((0700, 0060)), 'XO')
-#. . . .
-#. O O .
-#. X X X
+## print view(flip((0700, 0060)))
+#.  . . .
+#.  X X .
+#.  O O O
 #. 
 
 #ways_to_win = (0700, 0070, 0007, 0444, 0222, 0111, 0421, 0124)
