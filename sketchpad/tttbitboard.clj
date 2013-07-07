@@ -8,7 +8,7 @@
 
 ;; XXX I'm a clojure beginner, can this be nicer or avoided?
 (defn mins-key
-  "Returns the x's for which (key x) is least. (One or more of them)."
+  "Returns the x's for which (key x) is least. (One or more of them.)"
   [key x & more]
   (reduce (fn [leasts y]
             (let [diff (compare (key (first leasts)) (key y))]
