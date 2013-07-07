@@ -12,6 +12,11 @@ we don't report those cases.)
 Cases related by symmetry are deduplicated. (The symmetries could be
 exploited the same way in tttplaybitboard, but this turns out to speed
 things up by only 1/3 or so, so we don't bother.)
+
+TODO: mail from Peter Fraenkel suggests there's a bug
+TODO: more comparisons -- e.g. drunk_play vs. others
+TODO: also try giving higher scores to won positions with more empty squares
+from https://github.com/gigamonkey/gigamonkey-tic-tac-toe/blob/master/perfect.py
 """
 
 from tttplaybitboard import *
