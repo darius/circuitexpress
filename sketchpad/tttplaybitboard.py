@@ -18,7 +18,7 @@ def main(argv):
             raise KeyError
     except KeyError:
         print "Usage: %s [player] [player]" % argv[0]
-        print "where a player is one of:", ' '.join(sorted(pool.keys()))
+        print "where a player is one of:", ' '.join(sorted(pool))
         return 1
     else:
         tictactoe(*faceoff)
