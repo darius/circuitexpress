@@ -18,13 +18,13 @@ from tttplaybitboard import *
 
 def viz_diffs():
     for grid in sorted(all_diffs()):
-        orig = view(grid, 'XO')
+        original = view(grid, 'XO')
         succ1 = min(successors(grid), key=evaluate)
         succ2 = best_successor(grid)
         v1 = view(succ1, 'OX')
         v2 = view(succ2, 'OX')
         improvement = drunk_value(succ1) - drunk_value(succ2)
-        print abut(orig, abut(v1, v2)), '  %.2g' % improvement
+        print abut(original, abut(v1, v2)), '  %.2g' % improvement
         print
 
 def abut(s, t, sep='   '):
@@ -44,9 +44,9 @@ def diffs(grid):
     grid = normalize(grid)
     if is_won(grid) or not successors(grid):
         return set()
-    successor = best_successor(grid)
-    succ2 = min(successors(grid), key=evaluate)
-    diff = set([grid]) if normalize(successor) != normalize(succ2) else set()
+    succ1 = min(successors(grid), key=evaluate)
+    succ2 = best_successor(grid)
+    diff = set([grid]) if normalize(succ1) != normalize(succ2) else set()
     return diff.union(*map(diffs, successors(grid)))
 
 
@@ -75,13 +75,9 @@ def flip((p, q)):
 
 def turn((p, q)):
     "Turn the grid a quarter turn."
-    # abc     cfi
-    # def --> beh
-    # ghi     adg
-    #
-    #         2  4  6
-    #        -2  0  2
-    #        -6 -4 -2
+    # abc     cfi        2  4  6
+    # def --> beh       -2  0  2
+    # ghi     adg       -6 -4 -2
     def turn1(b):
         return (  ((b & 0001) << 6)
                 | ((b & 0010) << 4)
