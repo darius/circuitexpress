@@ -1,8 +1,8 @@
 """
-My super-fancy console tic-tac-toe. A rewrite of tttplay using a bitboard
-representation as inspired by https://gist.github.com/pnf/5924614
-And grid_format came from
-https://github.com/gigamonkey/gigamonkey-tic-tac-toe/blob/master/search.py
+My super-fancy console tic-tac-toe.
+Derived from tttplay.py
+Bitboards from https://gist.github.com/pnf/5924614
+grid_format from https://github.com/gigamonkey/gigamonkey-tic-tac-toe/blob/master/search.py
 """
 
 def main(argv):
