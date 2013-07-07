@@ -139,12 +139,12 @@ def view(grid):
     return grid_format % tuple(('.'+player_marks(grid))[by_p + 2*by_q]
                                for by_p, by_q in zip(*map(player_bits, grid)))
 
-def player_bits(bits):
-    return ((bits >> i) & 1 for i in reversed(range(9)))
-
 def player_marks((p, q)):
     "Return two results: the player's mark and their opponent's."
     return 'XO' if sum(player_bits(p)) == sum(player_bits(q)) else 'OX'
+
+def player_bits(bits):
+    return ((bits >> i) & 1 for i in reversed(range(9)))
 
 def whose_move(grid):
     "Return the mark of the player to move."
