@@ -20,7 +20,7 @@ def viz_diffs():
     for grid in sorted(all_diffs()):
         original = view(grid)
         succ1 = min(successors(grid), key=evaluate)
-        succ2 = best_successor(grid)
+        succ2 = max_play(grid)
         v1 = view(succ1)
         v2 = view(succ2)
         improvement = drunk_value(succ1) - drunk_value(succ2)
@@ -45,7 +45,7 @@ def diffs(grid):
     if is_won(grid) or not successors(grid):
         return set()
     succ1 = min(successors(grid), key=evaluate)
-    succ2 = best_successor(grid)
+    succ2 = max_play(grid)
     diff = set([grid]) if normalize(succ1) != normalize(succ2) else set()
     return diff.union(*map(diffs, successors(grid)))
 

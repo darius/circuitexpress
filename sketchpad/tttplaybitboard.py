@@ -89,9 +89,6 @@ def drunk_play(grid):
 
 def max_play(grid):
     "Play minimax with ties broken by drunk_value."
-    return best_successor(grid)
-
-def best_successor(grid):
     return min(successors(grid),
                key=lambda succ: (evaluate(succ), drunk_value(succ)))
 
