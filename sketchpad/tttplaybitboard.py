@@ -52,6 +52,7 @@ def average(ns):
     return float(sum(ns)) / len(ns)
 
 def memo(f):
+    "Return a function like f that remembers and reuses results of past calls."
     table = {}
     def memo_f(*args):
         try:
@@ -88,8 +89,12 @@ def drunk_play(grid):
     "Beatable, but not so stupid it seems mindless."
     return min(successors(grid), key=drunk_value)
 
+def spock_play(grid):
+    "Play supposing both players are rational."
+    return min(successors(grid), key=evaluate)
+
 def max_play(grid):
-    "Play minimax with ties broken by drunk_value."
+    "Play like Spock, except breaking ties by drunk_value."
     return min(successors(grid),
                key=lambda succ: (evaluate(succ), drunk_value(succ)))
 
@@ -108,10 +113,17 @@ def evaluate(grid):
     return -min(map(evaluate, succs)) if succs else 0
     
 
-# Bit-board representation: a pair of bitsets (p, q),
-# p for the player to move, q for their opponent.
-# Least significant bit is the lower-right square; msb is upper-left.
-# (Differs from the human move numbering for the sake of nice octal constants.)
+# We represent a tic-tac-toe grid as a pair of bit-vectors (p, q), p
+# for the player to move, q for their opponent. So p has 9
+# bit-positions, one for each square in the grid, with a 1 in the
+# positions where the player has already moved; and likewise for the
+# other player's moves in q. The least significant bit is the
+# lower-right square; the most significant is upper-left. (Differs
+# from the human move numbering for the sake of nice octal constants.)
+
+# (Some scaffolding to view examples inline, below:)
+## def multiview(grids): print '\n'.join(reduce(beside, [view(g).split('\n') for g in grids])),
+## def beside(block1, block2): return map('  '.join, zip(block1, block2))
 
 empty_grid = 0, 0
 
@@ -121,14 +133,30 @@ def is_won((p, q)):
 
 ways_to_win = (0700, 0070, 0007, 0444, 0222, 0111, 0421, 0124)
 
+## multiview((0, way) for way in ways_to_win)
+#.  X X X   . . .   . . .   X . .   . X .   . . X   X . .   . . X
+#.  . . .   X X X   . . .   X . .   . X .   . . X   . X .   . X .
+#.  . . .   . . .   X X X   X . .   . X .   . . X   . . X   X . .
+
 def successors(grid):
     "Return the possible grids resulting from p's moves."
     return filter(None, (apply_move(grid, move) for move in range(9)))
+
+## multiview(successors(empty_grid))
+#.  . . .   . . .   . . .   . . .   . . .   . . .   . . X   . X .   X . .
+#.  . . .   . . .   . . .   . . X   . X .   X . .   . . .   . . .   . . .
+#.  . . X   . X .   X . .   . . .   . . .   . . .   . . .   . . .   . . .
 
 def apply_move((p, q), move):
     "Try to move: return a new grid, or None if illegal."
     bit = 1 << move
     return (q, p | bit) if 0 == (bit & (p | q)) else None
+
+## example = ((0112, 0221))
+## multiview([example, apply_move(example, 2)])
+#.  . O X   . O X
+#.  . O X   . O X
+#.  . X O   X X O
 
 def from_human_move(n):
     "Convert from a move numbered 1..9 in top-left..bottom-right order."
@@ -150,30 +178,23 @@ def whose_move(grid):
     "Return the mark of the player to move."
     return player_marks(grid)[0]
 
-## print view((0610, 0061))
+# Starting from this board:
+## print view((0610, 0061)),
 #.  X X .
 #.  O O X
 #.  . . O
-#. 
-## for succ in successors((0610, 0061)): print view(succ),'\n'
-#.  X X .
-#.  O O X
-#.  . X O 
-#. 
-#.  X X .
-#.  O O X
-#.  X . O 
-#. 
-#.  X X X
-#.  O O X
-#.  . . O 
-#. 
-#. 
-## print view(max_play((0610, 0061)))
+
+# Spock examines these choices:
+## multiview(successors((0610, 0061)))
+#.  X X .   X X .   X X X
+#.  O O X   O O X   O O X
+#.  . X O   X . O   . . O
+
+# and picks the win:
+## print view(spock_play((0610, 0061))),
 #.  X X X
 #.  O O X
 #.  . . O
-#. 
 
 if __name__ == '__main__':
     import sys
