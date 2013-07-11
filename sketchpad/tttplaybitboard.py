@@ -118,8 +118,7 @@ def evaluate(grid):
 # bit-positions, one for each square in the grid, with a 1 in the
 # positions where the player has already moved; and likewise for the
 # other player's moves in q. The least significant bit is the
-# lower-right square; the most significant is upper-left. (Differs
-# from the human move numbering for the sake of nice octal constants.)
+# lower-right square; the most significant is upper-left.
 
 # (Some scaffolding to view examples inline, below:)
 ## def multiview(grids): print '\n'.join(reduce(beside, [view(g).split('\n') for g in grids])),
@@ -131,6 +130,7 @@ def is_won((p, q)):
     "Did the latest move win the game?"
     return any(way == (way & q) for way in ways_to_win)
 
+# Numbers starting with 0 are in octal: 3 bits/digit, thus one row per digit.
 ways_to_win = (0700, 0070, 0007, 0444, 0222, 0111, 0421, 0124)
 
 ## multiview((0, way) for way in ways_to_win)
