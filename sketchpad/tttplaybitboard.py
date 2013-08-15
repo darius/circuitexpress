@@ -162,10 +162,9 @@ def from_human_move(n):
     "Convert from a move numbered 1..9 in top-left..bottom-right order."
     return 9 - n
 
-def view(grid):
-    "Show a grid human-readably."
-    return grid_format % tuple(('.'+player_marks(grid))[by_p + 2*by_q]
-                               for by_p, by_q in zip(*map(player_bits, grid)))
+def whose_move(grid):
+    "Return the mark of the player to move."
+    return player_marks(grid)[0]
 
 def player_marks((p, q)):
     "Return two results: the player's mark and their opponent's."
@@ -174,9 +173,10 @@ def player_marks((p, q)):
 def player_bits(bits):
     return ((bits >> i) & 1 for i in reversed(range(9)))
 
-def whose_move(grid):
-    "Return the mark of the player to move."
-    return player_marks(grid)[0]
+def view(grid):
+    "Show a grid human-readably."
+    return grid_format % tuple(('.'+player_marks(grid))[by_p + 2*by_q]
+                               for by_p, by_q in zip(*map(player_bits, grid)))
 
 # Starting from this board:
 ## print view((0610, 0061)),
