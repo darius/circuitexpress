@@ -175,7 +175,8 @@ def player_bits(bits):
 
 def view(grid):
     "Show a grid human-readably."
-    return grid_format % tuple(('.'+player_marks(grid))[by_p + 2*by_q]
+    p_mark, q_mark = player_marks(grid)
+    return grid_format % tuple(p_mark if by_p else q_mark if by_q else '.'
                                for by_p, by_q in zip(*map(player_bits, grid)))
 
 # Starting from this board:
