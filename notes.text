@@ -1,3 +1,12 @@
+a 1-bit computer design:
+http://tinymicros.com/mediawiki/images/e/ec/MC14500B_Handbook.pdf
+
+a programmable state machine that's economical with logic:
+http://laughtonelectronics.com/Arcana/One-bit%20computer/One-bit%20computer.html
+see also http://en.wikipedia.org/wiki/Motorola_MC14500B
+
+Could the tictactoe circuit be simpler using state?
+
 another angle on what i'm trying to do here: when you try to break
 down meanings in everyday life, like a philosopher or semanticist, you
 never really get to the bottom of things. dictionary definitions are
@@ -81,3 +90,39 @@ http://arxiv.org/abs/1009.1720
 
 http://blog.notdot.net/2012/10/Build-your-own-FPGA
 http://dangerousprototypes.com/2012/11/09/open-7400-logic-competition-winners-2012/
+
+when/if you introduce reversibility, do it with the Fredkin gate: it's
+just a tweak to the if-then-else we're using.
+
+do Karnaugh maps make sense if you're thinking in terms of
+if-then-else instead of sum-of-product?
+
+what does resolution look like if you generalize from and/or to
+min/max? or use only if-then-else?
+
+C.S. Peirce (1887), "Logical Machines"
+Peirce also had the idea of Shannon's switching circuits as boolean
+algebra, in a letter to Marquand of 1886.
+http://libweb5.princeton.edu/visual_materials/pulc/pulc_v_45_n_3.pdf
+
+
+From: Dave Long <dave.long@bluewin.ch>
+Date: Fri, 28 Nov 2014 10:09:23 +0100
+
+> shouldn't we also calculate sequential circuits, using
+> Kleene algebra?
+
+cf Möller, "Algebraic Structures for Program Calculation" (his final
+example is calculation of a systolic convolution)
+
+Very helpful for me, as Möller actually proves several things in this
+paper that I had been using as "working assumptions".  (and his
+bibliography is somewhat of a "transitive closure", in that he not
+only cites his direct predecessors, but also foundational material
+back in the 1950's and 60's)
+
+Unfortunately he doesn't seem to have any of his papers available on
+his home page; I wound up reading this one through a friendlier-than-
+usual Google Books image.
+
+-Dave
